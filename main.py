@@ -4,7 +4,6 @@ import getopt
 from GitHubDataFetcher import GitHubDataFetcher
 from DependencyFile import DependencyFile
 from ErrorFile import ErrorFile
-import json
 
 
 # Github Token
@@ -24,7 +23,8 @@ def main(argv):
     except getopt.GetoptError:
         print('-r or --repo  The name of the github repository')
         print('-o or --owner  The owner of the github repository')
-        print('-f or --outputfile (Optional)  The output file')
+        print('-f or --outputfile (Optional) (Default : <OWNER+REPONAME>dependecies.json) \
+                The output file')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
