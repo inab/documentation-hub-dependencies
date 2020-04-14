@@ -12,6 +12,11 @@ OWNER = ""
 REPOSITORY = ""
 OUTPUTFILE = ""
 
+def showHelp():
+    print('-r or --repo  The name of the github repository')
+    print('-o or --owner  The owner of the github repository')
+    print('-f or --outputfile (Optional) (Default : <OWNER+REPONAME>dependecies.json) \
+            The output file')
 
 def main(argv):
     global OWNER, REPOSITORY, OUTPUTFILE
@@ -21,17 +26,11 @@ def main(argv):
         opts, remainder = getopt.getopt(
             argv, "hr:o:f:", ["repo=", "owner=", "outputfile="])
     except getopt.GetoptError:
-        print('-r or --repo  The name of the github repository')
-        print('-o or --owner  The owner of the github repository')
-        print('-f or --outputfile (Optional) (Default : <OWNER+REPONAME>dependecies.json) \
-                The output file')
+        showHelp()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('-r or --repo  The name of the github repository')
-            print('-o or --owner  The owner of the github repository')
-            print('-f or --outputfile (Optional) (Default : <OWNER+REPONAME>dependecies.json) \
-                The output file')
+            showHelp()
             sys.exit()
         elif opt in ("-r", "--repo"):
             REPOSITORY = arg
