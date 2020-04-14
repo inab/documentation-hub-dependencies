@@ -1,0 +1,4 @@
+class Dependency:
+    repoID = ""
+    owner = ""
+    
