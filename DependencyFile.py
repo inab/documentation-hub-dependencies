@@ -1,4 +1,4 @@
-import json
+from Methods import Methods
 
 default = [{
     "repoUrl": "",
@@ -6,7 +6,7 @@ default = [{
 }]
 
 
-class DependencyFile:
+class DependencyFile(Methods):
     def __init__(self, repoid, name, owner, licenseInfo, repositoryTopics, dependencies=default):
         self.repoid = repoid
         self.name = name
@@ -14,8 +14,3 @@ class DependencyFile:
         self.licenseInfo = licenseInfo
         self.repositoryTopics = repositoryTopics
         self.dependencies = dependencies
-
-    def toJson(self, filename):
-
-        with open(filename, 'w') as outfile:
-            return json.dump(self.__dict__, outfile)

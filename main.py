@@ -2,7 +2,10 @@ import config as props
 import sys
 import getopt
 from GitHubDataFetcher import GitHubDataFetcher
+from DependencyFile import DependencyFile
+from ErrorFile import ErrorFile
 import json
+
 
 # Github Token
 TOKEN = props.token
@@ -18,7 +21,6 @@ def main(argv):
         # opts are the arguments and remainders are the arrguments that will not be complete if something goes wrong
         opts, remainder = getopt.getopt(
             argv, "hr:o:f:", ["repo=", "owner=", "outputfile="])
-        print(opts)
     except getopt.GetoptError:
         print('-r or --repo  The name of the github repository')
         print('-o or --owner  The owner of the github repository')
@@ -37,18 +39,22 @@ def main(argv):
             OWNER = arg
         elif opt in ("-f", "--outputfile"):
             OUTPUTFILE = arg
+    # check if repo and owner are specified
     if(OWNER and REPOSITORY):
-        # create the repository
+        # create the fetcher
         data = GitHubDataFetcher(OWNER, REPOSITORY, TOKEN)
-        # get the dependency object
+        # get the response object
         res = data.getInfo()
-        print(res)
 
-        if(OUTPUTFILE):
-            output = OUTPUTFILE+"dependecies.json"
-        else:
-            output = OWNER+REPOSITORY+"dependecies.json"
-        # write file
+        # response is type ErrorFile or DependencyFile
+        if(isinstance(res, DependencyFile)):
+            if(OUTPUTFILE):
+                output = OUTPUTFILE+"dependecies.json"
+            else:
+                output = OWNER+REPOSITORY+"dependecies.json"
+        elif(isinstance(res, ErrorFile)):
+            output = "error.json"
+            # write file
         res.toJson(output)
     else:
         print("--repo and --owner arguments are mandatory")

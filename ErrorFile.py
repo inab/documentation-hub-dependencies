@@ -1,10 +1,6 @@
-import json
+from Methods import Methods
 
 
-class ErrorFile:
+class ErrorFile(Methods):
     def __init__(self, message):
         self.message = message
-
-    def toJson(self, filename):
-        with open(filename, 'w') as outfile:
-            return json.dump(self.__dict__, outfile)

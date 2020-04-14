@@ -32,7 +32,7 @@ class GitHubDataFetcher:
         # create query. For the sake of sanaty reasons the topic limit is set to first 100 topics
         query = """
                 {
-                    repository(name: """+self.repository+""", owner: """+self.owner+""") {
+                    repository(name: \"%s\" , owner: \"%s\" ) {
                         id
                         name
                         owner {
@@ -42,7 +42,7 @@ class GitHubDataFetcher:
                         licenseInfo {
                             name
                         }
-                        repositoryTopics(first: 100) {
+                        repositoryTopics(first: %d) {
                             edges {
                                 node {
                                     topic {
@@ -53,9 +53,16 @@ class GitHubDataFetcher:
                         }
                     }
                 }
-                """
+                """ % (self.repository, self.owner, 100)
+
         res = self.run_query(query, hearders)
-        if('data' in res):
+
+        if('errors' in res):
+            print("Error in creating file, please read the output file")
+            msg = res['errors']
+            e = ErrorFile(msg)
+            return e
+        elif('data' in res):
             repoid = res['data']['repository']['id']
             name = res['data']['repository']['name']
             owner = res['data']['repository']['owner']
@@ -69,10 +76,6 @@ class GitHubDataFetcher:
             d = DependencyFile(repoid, name, owner,
                                licenseInfo, repositoryTopics)
             return d
-        elif('errors' in res):
-            msg = res['errors']['message']
-            e = ErrorFile(msg)
-            return e
         else:
             msg = "Something went wrong"
             e = ErrorFile(msg)
