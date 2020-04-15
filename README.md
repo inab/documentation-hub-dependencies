@@ -14,6 +14,6 @@ token = "Paste github token here"
 ```
 ```sh
 $ pip install -r requirements.txt
-$ main.py -h #help 
+$ python main.py -h #help 
 ```
 [token]:<https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line>
